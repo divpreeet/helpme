@@ -28,6 +28,8 @@ def speak(text):
         "--output", "result.wav"
     ])
 
+    subprocess.run(["afplay", "result.wav"], check=False)
+
 image = capture_q()
 if image:
     image_data = encode(image)
@@ -47,7 +49,7 @@ if image:
                 "messages": [{
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Recognize the question in the image, and provide a clear and short answer, provide just the answer to the question, if the answer is in numbers, please provide the numbers as words, eg: 4 will become four, dont use roman numerals like 'i', provide them as 'one', provide a comma after the roman numeral, and dont use dashes, pleasep provide a comma after each answer. nothing else."},
+                        {"type": "text", "text": "Recognize the question in the image, and provide a clear and short answer, provide just the answer to the question, if the answer is in numbers, please provide the numbers as words, eg: 4 will become four, dont use roman numerals like 'i', provide them as 'one', provide a comma after the roman numeral, and dont use dashes, please provide a comma after each answer, dont use brackets, and questions with variables, please add a space after the number and its respective variable. nothing else."},
                         {
                             "type": "image_url",
                             "image_url": {
@@ -63,8 +65,9 @@ if image:
 
         if response.ok:        
             result = response.json()
-            print(result["choices"][0]["message"]["content"])
-            speak(f"Miss, i am getting the answer as{result["choices"][0]["message"]["content"]}")
+            answer = result["choices"][0]["message"]["content"].strip()
+            print(answer)
+            speak(f"Miss, i am getting the answer as {answer}")
             
         else:
             print(response.text)
