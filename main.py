@@ -16,8 +16,19 @@ def encode(image):
     with open(image, "rb") as file:
         return base64.b64encode(file.read()).decode('utf-8')
 
-image = capture_q()
 
+def speak(text):
+    subprocess.run([
+        "python", "-m", "f5_tts_mlx.generate",
+        "--ref-audio", "voice.wav",
+        "--ref-text", "Hey, miss, I'm getting the answers forty two. No, wait, forty five",
+        "--text", text,
+        "--method", "midpoint",
+        "--q", "4",
+        "--output", "result.wav"
+    ])
+
+image = capture_q()
 if image:
     image_data = encode(image)
 
@@ -36,7 +47,7 @@ if image:
                 "messages": [{
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Recognize the question in the image, and provide a clear and short answer, provide just the answer to the question, nothing else."},
+                        {"type": "text", "text": "Recognize the question in the image, and provide a clear and short answer, provide just the answer to the question, if the answer is in numbers, please provide the numbers as words, eg: 4 will become four, dont use roman numerals like 'i', provide them as 'one', provide a comma after the roman numeral, and dont use dashes, pleasep provide a comma after each answer. nothing else."},
                         {
                             "type": "image_url",
                             "image_url": {
@@ -53,6 +64,8 @@ if image:
         if response.ok:        
             result = response.json()
             print(result["choices"][0]["message"]["content"])
+            speak(f"Miss, i am getting the answer as{result["choices"][0]["message"]["content"]}")
+            
         else:
             print(response.text)
 
