@@ -29,16 +29,15 @@ def speak(text):
     ])
 
     subprocess.run(["afplay", "result.wav"], check=False)
+    return "playing audio before saying it in zoom"
 
 image = capture_q()
-if image:
-    image_data = encode(image)
 
+def ask_ai(image):
     api = os.getenv('KEY')
     if not api:
-        print("error, no api key")
-    else:
-        response = requests.post(
+        return None, 'no api key found.'
+    response = requests.post(
             "https://ai.hackclub.com/proxy/v1/chat/completions",
             headers={
                 "Authorization": f"Bearer {api}",
@@ -53,7 +52,7 @@ if image:
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"data:image/png;base64,{image_data}"
+                                "url": f"data:image/png;base64,{image}"
                             }
                         }
 
@@ -62,17 +61,8 @@ if image:
                 }]
             }
         )
-
-        if response.ok:        
-            result = response.json()
-            answer = result["choices"][0]["message"]["content"].strip()
-            print(answer)
-            speak(f"Miss, i am getting the answer as {answer}")
-            
-        else:
-            print(response.text)
-
-else:
-    print("no screenshot taken")
+    if response.ok:
+        return response.json()["choices"][0]["message"]["content"].strip(), None
+    return None, response.text
 
 
