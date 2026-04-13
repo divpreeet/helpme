@@ -31,7 +31,7 @@ def speak(text):
     subprocess.run(["afplay", "result.wav"], check=False)
     return "playing audio before saying it in zoom"
 
-image = capture_q()
+# image = capture_q()
 
 def ask_ai(image):
     api = os.getenv('KEY')

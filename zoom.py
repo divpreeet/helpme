@@ -50,4 +50,5 @@ def focus(file):
     set_input(input)
     pyautogui.hotkey("shift", "command", "a")
 
-focus("result.wav")
+if __name__ == "__main__":
+    focus("result.wav")
