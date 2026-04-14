@@ -3,6 +3,7 @@ import subprocess
 import os
 import requests
 import base64
+import sys
 
 def capture_q():
     question = "screenshot.png"
@@ -62,7 +63,16 @@ def ask_ai(image):
             }
         )
     if response.ok:
-        return response.json()["choices"][0]["message"]["content"].strip(), None
+        data = response.json()
+        content = data["choices"][0]["message"].get("content")
+
+        if isinstance(content, str):
+            content = content.strip()
+            if content:
+                return content, None
+
+        return None, f"empty model response: {data}"
+
     return None, response.text
 
 

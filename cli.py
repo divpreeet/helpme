@@ -7,8 +7,18 @@ from rich.prompt import Prompt, Confirm
 from rich.table import Table
 import main as main
 import zoom as zoom
+import random
 
 console = Console()
+responses = [
+    "Miss, I am getting the answer as,",
+    "I think the answer is,",
+    "I am pretty sure the answer is,",
+    "Miss, the answer is,",
+    "The answer is,",
+    "I think the answer to the question is,"
+]
+
 
 def title():
     console.print(
@@ -47,12 +57,12 @@ def full():
     console.print(Panel.fit(f"[bold green]{answer_ai}[/bold green]\n"))
 
     console.print("[bold]3. generating and playing tts locally before zoom[/bold]")
-    main.speak(answer_ai)
+    main.speak(f"{random.choice(responses)} {answer_ai}")
 
     console.print("[bold]4. sending audio to zoom now[/bold]")
     zoom.focus("result.wav")
     console.print("[green]done.[/green]")
-
+    
 
 def answer():
     console.print("\n[bold]1: capture screenshot[/bold]")

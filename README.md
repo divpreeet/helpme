@@ -5,6 +5,8 @@
 > this project does not condone cheating, or voice cloning and use by AI. It is just a project that I found interesting to build.
 
 ## installation
+> this would only work on macos!
+
 make sure you have python3 and the required deps installed - 
 ```sh
 brew install python3 switchaudio-osx
@@ -34,11 +36,19 @@ brew install blackhole-2ch
 then, go to the "Audio MiDi Setup" app on macos and create a multioutput device called `Zoom Output` with your speaker, and blackhole checked, and an aggregate device with the name `Zoom Audio` with your microphone and blackhole!
 
 ---
-then, you can export the api key in the same terminal session as `KEY` - 
+then, make sure you export the api key in the same terminal session as `KEY` - 
 ```sh
 export KEY=your_api_key
 ```
-and just run executable from the terminal!
+
+you also need to create a python env and install `f5_tts_mlx` in the same session -
+```sh
+python3 -m venv venv
+source venv/bin/activate
+pip install f5_tts_mlx
+```
+
+then just run executable from the terminal and provide the permissions it asks for!
 ```sh
 ./helpme
 ```
